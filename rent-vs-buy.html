@@ -1236,14 +1236,14 @@ if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpd
 if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
 if(
 if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
-if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
+if(ffCalcBtnEl) if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');
   var fee = ffIsExempt ? 0 : ffIsFirst ? 0.0215 : 0.033;
   var feeAmt = price * fee;
   var resultEl = document.getElementById('ffResult');
   var noteEl = document.getElementById('ffNote');
   if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt. Verify at VA.gov.' : 'Can be rolled into loan. Verify at VA.gov.';
+  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'Can be rolled into your loan. Verify current rates at VA.gov.';
   var resBox = document.getElementById('ffResultBox');
   if(resBox) resBox.style.display='block';
 });

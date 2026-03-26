@@ -1258,27 +1258,6 @@ if(rvBtnEl) rvBtnEl.addEventListener('click', function() {
 
   document.getElementById('rvResult').style.display = 'block';
 });
-
-// ════════════════════════════════════════════
-// PCS CHECKLIST
-// ════════════════════════════════════════════
-var total = 16;
-function updateProgress() {
-  var done = document.querySelectorAll('.ck-box.done').length;
-  var pct = Math.round(done / total * 100);
-  document.getElementById('pcsProgressBar').style.width = pct + '%';
-  document.getElementById('pcsProgressText').textContent = done + ' of ' + total + ' complete';
-  document.getElementById('pcsProgressPct').textContent = pct + '%';
-}
-for (var i = 1; i <= total; i++) {
-  (function(idx) {
-    var box = document.getElementById('ck' + idx);
-    if (box) {
-      box.addEventListener('click', function() {
-        this.classList.toggle('done');
-        this.textContent = this.classList.contains('done') ? '✓' : '';
-        updateProgress();
-      });
 }); // end DOMContentLoaded
 </script>
 </body>
