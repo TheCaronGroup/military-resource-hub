@@ -963,7 +963,7 @@ h2.sec-h.gold{color:var(--gold2);}
 
 
 <script>
-// Global functions - must be outside DOMContentLoaded for onclick to work
+// ── GLOBAL FUNCTIONS (must be outside DOMContentLoaded for onclick handlers) ──
 function switchBase(btn, baseName) {
   var panels = document.querySelectorAll('.base-panel');
   for (var i = 0; i < panels.length; i++) { panels[i].style.display = 'none'; }
@@ -973,372 +973,215 @@ function switchBase(btn, baseName) {
   for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
   if (btn) { btn.classList.add('active'); }
 }
-
 function goHome() { window.location.href = 'index.html'; }
 </script>
 
 <script>
-
-
-function switchBase(btn, baseName) {
-  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
-  var target = document.getElementById('base-'+baseName);
-  if(target) target.style.display='block';
-  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-}
-
-function switchTab(tabName) {
-  // Hide all panels
-  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
-  // Deactivate all tab buttons
-  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-  // Show target panel
-  var panel = document.getElementById('panel-' + tabName);
-  if (panel) { panel.classList.add('active'); }
-  // Activate matching buttons
-  document.querySelectorAll('[data-tab="' + tabName + '"]').forEach(function(b){b.classList.add('active');});
-  // Close mobile drawer
-  document.getElementById('navDrawer').classList.remove('open');
-  // Scroll to top
-  window.scrollTo(0, 0);
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
-// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════
+// ── MORTGAGE CALCULATOR ──
+var isVA = true, isExempt = false;
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
 
-// Tab button click handlers
-document.querySelectorAll('.tab-btn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var tab = this.getAttribute('data-tab');
-    if (tab) switchTab(tab);
+['vaToggle','convToggle'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('click', function() {
+    isVA = (id === 'vaToggle');
+    ['vaToggle','convToggle'].forEach(function(bid) {
+      var b = document.getElementById(bid);
+      if(b) b.classList[bid === id ? 'add' : 'remove']('active');
+    });
   });
 });
-
-// Tab links - all elements with tab-link class
-document.querySelectorAll('.tab-link').forEach(function(el){
-  el.addEventListener('click', function(e){
-    e.preventDefault();
-    var tab = this.getAttribute('data-tab');
-    if(tab){switchTab(tab);window.scrollTo({top:0,behavior:'smooth'});}
+['exemptYes','exemptNo'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('click', function() {
+    isExempt = (id === 'exemptYes');
+    ['exemptYes','exemptNo'].forEach(function(bid) {
+      var b = document.getElementById(bid);
+      if(b) b.classList[bid === id ? 'add' : 'remove']('active');
+    });
   });
-});
-
-// Mobile menu
-var menuBtn = document.getElementById('menuBtn');
-var navDrawer = document.getElementById('navDrawer');
-if (menuBtn) {
-  menuBtn.addEventListener('click', function() {
-    navDrawer.classList.toggle('open');
-  });
-}
-
-// ════════════════════════════════════════════
-// BASE SUB-TABS (Where to Live)
-// ════════════════════════════════════════════
-
-// ════════════════════════════════════════════
-// FAQ ACCORDIONS
-// ════════════════════════════════════════════
-document.querySelectorAll('.faq-q').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var item = this.closest('.faq-item');
-    var isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
-// ════════════════════════════════════════════
-// RANK SELECTOR
-// ════════════════════════════════════════════
-var bahData = {
-  E4: { w: 2988, wo: 2181, label: 'E-4' },
-  E5: { w: 3975, wo: 2988, label: 'E-5' },
-  E6: { w: 4404, wo: 3726, label: 'E-6' },
-  E7: { w: 4446, wo: 3762, label: 'E-7' },
-  E8: { w: 4698, wo: 3978, label: 'E-8' },
-  O1: { w: 3951, wo: 3315, label: 'O-1' },
-  O2: { w: 4389, wo: 3726, label: 'O-2' },
-  O3: { w: 5286, wo: 4473, label: 'O-3' }
-};
-
-function fmt(n) { return '$' + n.toLocaleString(); }
-
-document.querySelectorAll('.rbtn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.rbtn').forEach(function(b){b.classList.remove('active');});
-    this.classList.add('active');
-    var rank = this.getAttribute('data-rank');
-    var d = bahData[rank];
-    if (!d) return;
-    var bah = d.w;
-    // Estimate: ~$640K condo, 6.5%, 30yr, VA
-    var loan = 640000 * 1.0215; // with funding fee
-    var rate = 0.065 / 12;
-    var pi = Math.round(loan * rate * Math.pow(1+rate,360) / (Math.pow(1+rate,360)-1));
-    var tax = Math.round(640000 * 0.0115 / 12);
-    var ins = 100;
-    var hoa = 400;
-    var total = pi + tax + ins + hoa;
-    var surplus = bah - total;
-    var rd = document.getElementById('rankDisplay');
-    rd.innerHTML = '<div style="margin-bottom:12px;">' +
-      '<div class="rd-rank">' + d.label + '</div>' +
-      '<div class="rd-bah">BAH w/ Dep: <strong>' + fmt(bah) + '/mo</strong> &nbsp;&#xB7;&nbsp; w/o: <strong>' + fmt(d.wo) + '/mo</strong></div>' +
-    '</div>' +
-    '<div class="rd-items">' +
-      '<div class="rd-item"><div class="rd-item-lbl">Mortgage (P&I)</div><div class="rd-item-val">' + fmt(pi) + '</div></div>' +
-      '<div class="rd-item"><div class="rd-item-lbl">Tax + Insurance</div><div class="rd-item-val">' + fmt(tax + ins) + '</div></div>' +
-      '<div class="rd-item"><div class="rd-item-lbl">HOA (est.)</div><div class="rd-item-val">' + fmt(hoa) + '</div></div>' +
-      '<div class="rd-item"><div class="rd-item-lbl">Total Payment</div><div class="rd-item-val" style="color:var(--gold2);">' + fmt(total) + '</div></div>' +
-    '</div>' +
-    '<div style="margin-top:12px;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:2px;font-size:12px;color:rgba(255,255,255,.5);">' +
-      '<strong style="color:' + (surplus >= 0 ? 'var(--green2)' : '#E8A838') + ';">' +
-      (surplus >= 0 ? '&#10003; BAH surplus: +' + fmt(surplus) + '/mo' : '&#9888; BAH shortfall: ' + fmt(surplus) + '/mo') +
-      '</strong> &nbsp;&#xB7;&nbsp; Based on $640K condo, 6.5% rate, 2026 BAH' +
-    '</div>';
-  });
-});
-
-// ════════════════════════════════════════════
-// FULL MORTGAGE CALCULATOR
-// ════════════════════════════════════════════
-var isVA = true;
-var isExempt = false;
-
-var vaToggleEl = document.getElementById('vaToggle');
-if(vaToggleEl) vaToggleEl.addEventListener('click', function() {
-  isVA = true;
-  this.classList.add('active');
-  document.getElementById('convToggle').classList.remove('active');
-});
-var convToggleEl = document.getElementById('convToggle');
-if(convToggleEl) convToggleEl.addEventListener('click', function() {
-  isVA = false;
-  this.classList.add('active');
-  document.getElementById('vaToggle').classList.remove('active');
-});
-var exemptYesEl = document.getElementById('exemptYes');
-if(exemptYesEl) exemptYesEl.addEventListener('click', function() {
-  isExempt = true;
-  this.classList.add('active');
-  document.getElementById('exemptNo').classList.remove('active');
-});
-var exemptNoEl = document.getElementById('exemptNo');
-if(exemptNoEl) exemptNoEl.addEventListener('click', function() {
-  isExempt = false;
-  this.classList.add('active');
-  document.getElementById('exemptYes').classList.remove('active');
 });
 
 var calcBtnEl = document.getElementById('calcBtn');
 if(calcBtnEl) calcBtnEl.addEventListener('click', function() {
-  var price = parseFloat(document.getElementById('c_price').value) || 620000;
-  var rate = parseFloat(document.getElementById('c_rate').value) / 100 / 12 || 0.065/12;
-  var down = parseFloat(document.getElementById('c_down').value) || 0;
-  var bah = parseFloat(document.getElementById('c_bah').value) || 4404;
-  var tax = parseFloat(document.getElementById('c_tax').value) / 12 || 640;
-  var hoa = parseFloat(document.getElementById('c_hoa').value) || 400;
-  var ins = parseFloat(document.getElementById('c_ins').value) || 100;
-  var mello = parseFloat(document.getElementById('c_mello').value) || 0;
-
-  var feeRate = isVA && !isExempt ? 0.0215 : 0;
-  var loan = (price - down) * (1 + feeRate);
-  var feeAmt = (price - down) * feeRate;
+  var price  = parseFloat(document.getElementById('c_price').value)  || 620000;
+  var rate   = (parseFloat(document.getElementById('c_rate').value)  || 6.5) / 100 / 12;
+  var down   = parseFloat(document.getElementById('c_down').value)   || 0;
+  var bah    = parseFloat(document.getElementById('c_bah').value)    || 4404;
+  var taxAnn = parseFloat(document.getElementById('c_tax').value)    || 7750;
+  var hoa    = parseFloat(document.getElementById('c_hoa').value)    || 400;
+  var ins    = parseFloat(document.getElementById('c_ins').value)    || 100;
+  var mello  = parseFloat(document.getElementById('c_mello').value)  || 0;
+  var feeRate = (isVA && !isExempt) ? 0.0215 : 0;
+  var loan    = (price - down) * (1 + feeRate);
+  var feeAmt  = (price - down) * feeRate;
   var n = 360;
-  var pi = Math.round(loan * rate * Math.pow(1+rate,n) / (Math.pow(1+rate,n)-1));
-  var pmi = (!isVA && down < price * 0.2) ? Math.round((price - down) * 0.008 / 12) : 0;
+  var pi   = Math.round(loan * rate * Math.pow(1+rate,n) / (Math.pow(1+rate,n) - 1));
+  var tax  = Math.round(taxAnn / 12);
+  var pmi  = (!isVA && down < price*0.2) ? Math.round((price-down)*0.008/12) : 0;
   var total = pi + tax + hoa + ins + mello + pmi;
   var surplus = bah - total;
-  // 5yr equity: principal paid + 3% appreciation
-  var balance = loan;
-  var principalPaid = 0;
-  for (var i=0; i<60; i++) {
-    var int = balance * rate;
-    var prin = pi - int;
-    principalPaid += prin;
-    balance -= prin;
-  }
-  var appreciation = price * (Math.pow(1.03, 5) - 1);
-  var equity5yr = Math.round(principalPaid + appreciation + down);
-  var closeEst = Math.round(price * 0.005 + 2000);
-
-  document.getElementById('cPI').textContent = fmt(pi);
-  document.getElementById('cFee').textContent = isVA && !isExempt ? fmt(Math.round(feeAmt/360)) + '/mo (rolled in)' : '$0 — No funding fee';
-  document.getElementById('cFee').style.color = isVA && !isExempt ? 'var(--gold2)' : 'var(--green2)';
-  document.getElementById('cTax').textContent = fmt(Math.round(tax));
-  document.getElementById('cIns').textContent = fmt(ins);
-  document.getElementById('cHoa').textContent = fmt(hoa);
-  document.getElementById('cMello').textContent = fmt(mello);
-  document.getElementById('cPmi').textContent = pmi > 0 ? fmt(pmi) : '$0 (No PMI — VA)';
-  document.getElementById('cPmi').className = pmi > 0 ? 'c-val warn' : 'c-val green';
-  document.getElementById('cTotal').textContent = fmt(total);
-  document.getElementById('cBahOut').textContent = fmt(bah);
-  document.getElementById('cSurplus').textContent = (surplus >= 0 ? '+' : '') + fmt(surplus);
-  document.getElementById('cSurplus').className = 'c-val ' + (surplus >= 0 ? 'green' : 'warn');
-  document.getElementById('cClose').textContent = '~' + fmt(closeEst) + ' (closing costs only)';
-  document.getElementById('cEquity').textContent = '~' + fmt(equity5yr);
-  document.getElementById('calcNote').textContent = 'Based on 30-year fixed, ' + (isVA ? 'VA loan' : 'conventional') + '. Funding fee rate 2.15% (first use, no down). Tax uses 1.25% of purchase price annually. Appreciation at 3%/yr for equity estimate. Rates from VA.gov — verify current funding fee at VA.gov before budgeting.';
-  document.getElementById('calcResult').style.display = 'block';
+  var bal = loan, paid = 0;
+  for (var i = 0; i < 60; i++) { var ip = bal*rate, pp = pi-ip; paid+=pp; bal-=pp; }
+  var equity = Math.round(paid + price*(Math.pow(1.03,5)-1) + down);
+  var close  = Math.round(price*0.005 + 2000);
+  function set(id, val, cls) { var e=document.getElementById(id); if(e){e.textContent=val; if(cls)e.className=cls;} }
+  set('cPI',    fmt(pi));
+  set('cFee',   (isVA&&!isExempt) ? fmt(Math.round(feeAmt/360))+'/mo (rolled in)' : '$0 — No funding fee');
+  if(document.getElementById('cFee')) document.getElementById('cFee').style.color=(isVA&&!isExempt)?'var(--gold2)':'var(--green2)';
+  set('cTax',   fmt(tax));
+  set('cIns',   fmt(ins));
+  set('cHoa',   fmt(hoa));
+  set('cMello', fmt(mello));
+  set('cPmi',   pmi>0 ? fmt(pmi) : '$0 (No PMI — VA)', pmi>0?'c-val warn':'c-val green');
+  set('cTotal', fmt(total));
+  set('cBahOut',fmt(bah));
+  set('cSurplus',(surplus>=0?'+':'')+fmt(surplus), 'c-val '+(surplus>=0?'green':'warn'));
+  set('cClose', '~'+fmt(close)+' (closing costs only)');
+  set('cEquity','~'+fmt(equity));
+  set('calcNote','30-yr fixed '+(isVA?'VA':'conventional')+' loan. Funding fee 2.15% first use, no down. Appreciation 3%/yr. Verify all rates at VA.gov.');
+  var r = document.getElementById('calcResult'); if(r) r.style.display='block';
 });
 
-// ════════════════════════════════════════════
-// RENT VS BUY CALCULATOR
-// ════════════════════════════════════════════
+// ── RENT VS BUY CALCULATOR ──
 var rvBtnEl = document.getElementById('rvBtn');
 if(rvBtnEl) rvBtnEl.addEventListener('click', function() {
-  var rent = parseFloat(document.getElementById('rv_rent').value) || 3200;
-  var rentInc = parseFloat(document.getElementById('rv_rentInc').value) / 100 || 0.04;
-  var price = parseFloat(document.getElementById('rv_price').value) || 620000;
-  var rateAnn = parseFloat(document.getElementById('rv_rate').value) / 100 || 0.065;
-  var hoa = parseFloat(document.getElementById('rv_hoa').value) || 400;
-  var taxins = parseFloat(document.getElementById('rv_taxins').value) || 750;
-  var appr = parseFloat(document.getElementById('rv_appr').value) / 100 || 0.04;
-
-  var rate = rateAnn / 12;
-  var loan = price * 1.0215;
-  var pi = loan * rate * Math.pow(1+rate,360) / (Math.pow(1+rate,360)-1);
-  var monthlyBuy = pi + hoa + taxins;
-
-  // 5yr rent total
-  var rentTotal5 = 0;
-  var r = rent;
-  for (var i = 0; i < 60; i++) {
-    rentTotal5 += r;
-    if ((i+1) % 12 === 0) r *= (1 + rentInc);
-  }
-
-  // 5yr buy total + equity
-  var buyTotal5 = monthlyBuy * 60;
-  var bal = loan;
-  var prinPaid = 0;
-  for (var j = 0; j < 60; j++) {
-    var interest = bal * rate;
-    var prin = pi - interest;
-    prinPaid += prin;
-    bal -= prin;
-  }
-  var appVal = price * (Math.pow(1 + appr, 5) - 1);
-  var equity5 = Math.round(prinPaid + appVal);
-  var buyNet5 = Math.round(buyTotal5 - equity5);
-  var rentNet5 = Math.round(rentTotal5);
-  var advantage = Math.round(rentNet5 - buyNet5);
-
-  document.getElementById('rv_rentTotal5').textContent = '$' + Math.round(rentTotal5).toLocaleString();
-  document.getElementById('rv_rentNet5').textContent = '-$' + rentNet5.toLocaleString();
-  document.getElementById('rv_buyTotal5').textContent = '$' + Math.round(buyTotal5).toLocaleString();
-  document.getElementById('rv_equity5').textContent = '+$' + equity5.toLocaleString();
-  document.getElementById('rv_buyNet5').textContent = '-$' + Math.max(0, buyNet5).toLocaleString();
-  document.getElementById('rv_advantage').textContent = '$' + Math.max(0, advantage).toLocaleString();
-
-  document.getElementById('rvResult').style.display = 'block';
+  var rent    = parseFloat(document.getElementById('rv_rent').value)    || 3200;
+  var rentInc = (parseFloat(document.getElementById('rv_rentInc').value)|| 4) / 100;
+  var price   = parseFloat(document.getElementById('rv_price').value)   || 620000;
+  var rateAnn = (parseFloat(document.getElementById('rv_rate').value)   || 6.5) / 100;
+  var hoa     = parseFloat(document.getElementById('rv_hoa').value)     || 400;
+  var taxins  = parseFloat(document.getElementById('rv_taxins').value)  || 750;
+  var appr    = (parseFloat(document.getElementById('rv_appr').value)   || 4) / 100;
+  var rate    = rateAnn / 12;
+  var loan    = price * 1.0215;
+  var pi      = loan * rate * Math.pow(1+rate,360) / (Math.pow(1+rate,360)-1);
+  var rentTotal = 0, r = rent;
+  for (var i=0;i<60;i++) { rentTotal+=r; if((i+1)%12===0) r*=(1+rentInc); }
+  var buyTotal = (pi+hoa+taxins)*60;
+  var bal=loan, paid=0;
+  for (var j=0;j<60;j++) { var ip2=bal*rate,pp2=pi-ip2; paid+=pp2; bal-=pp2; }
+  var equity5  = Math.round(paid + price*(Math.pow(1+appr,5)-1));
+  var buyNet   = Math.round(buyTotal - equity5);
+  var rentNet  = Math.round(rentTotal);
+  var advantage= Math.round(rentNet - buyNet);
+  function setT(id,val){var e=document.getElementById(id);if(e)e.textContent=val;}
+  setT('rv_rentTotal5','$'+Math.round(rentTotal).toLocaleString());
+  setT('rv_rentNet5',  '-$'+rentNet.toLocaleString());
+  setT('rv_buyTotal5', '$'+Math.round(buyTotal).toLocaleString());
+  setT('rv_equity5',   '+$'+equity5.toLocaleString());
+  setT('rv_buyNet5',   '-$'+Math.max(0,buyNet).toLocaleString());
+  setT('rv_advantage', '$'+Math.max(0,advantage).toLocaleString());
+  var rv = document.getElementById('rvResult'); if(rv) rv.style.display='block';
 });
 
-// ════════════════════════════════════════════
-// PCS CHECKLIST
-// ════════════════════════════════════════════
+// ── PCS CHECKLIST ──
 var total = 16;
 function updateProgress() {
   var done = document.querySelectorAll('.ck-box.done').length;
-  var pct = Math.round(done / total * 100);
-  document.getElementById('pcsProgressBar').style.width = pct + '%';
-  document.getElementById('pcsProgressText').textContent = done + ' of ' + total + ' complete';
-  document.getElementById('pcsProgressPct').textContent = pct + '%';
+  var pct  = Math.round(done/total*100);
+  var pb=document.getElementById('pcsProgressBar'),
+      pt=document.getElementById('pcsProgressText'),
+      pp=document.getElementById('pcsProgressPct');
+  if(pb) pb.style.width = pct+'%';
+  if(pt) pt.textContent = done+' of '+total+' complete';
+  if(pp) pp.textContent = pct+'%';
 }
-for (var i = 1; i <= total; i++) {
-  (function(idx) {
-    var box = document.getElementById('ck' + idx);
-    if (box) {
-      box.addEventListener('click', function() {
-        this.classList.toggle('done');
-        this.textContent = this.classList.contains('done') ? '✓' : '';
-        updateProgress();
-      });
-    }
-  })(i);
-}
-
-// Also wire the play button
-var vidPlayBtn = document.querySelector('#vidThumb .vid-play');
-if (vidPlayBtn) {
-  vidPlayBtn.style.cursor = 'pointer';
+for (var ci=1; ci<=total; ci++) {
+  (function(idx){
+    var box = document.getElementById('ck'+idx);
+    if(box) box.addEventListener('click', function(){
+      this.classList.toggle('done');
+      this.textContent = this.classList.contains('done') ? '\u2713' : '';
+      updateProgress();
+    });
+  })(ci);
 }
 
+// ── WEATHER WIDGET ──
+var hr = new Date().getHours();
+var wx = hr>=6&&hr<12  ? {temp:'70\xb0',desc:'Coastal Morning',icon:'\u{1F305}'} :
+         hr>=12&&hr<17 ? {temp:'74\xb0',desc:'Sunny Afternoon',icon:'\u2600\uFE0F'} :
+         hr>=17&&hr<20 ? {temp:'69\xb0',desc:'Golden Hour',    icon:'\u{1F307}'} :
+                         {temp:'64\xb0',desc:'Cool Evening',   icon:'\u{1F319}'};
+var wt=document.getElementById('wbTemp'),wd=document.getElementById('wbDesc'),
+    wb=document.getElementById('weatherBadge');
+var wi=wb?wb.querySelector('.wb-icon'):null;
+if(wt)wt.textContent=wx.temp; if(wd)wd.textContent=wx.desc; if(wi)wi.textContent=wx.icon;
 
-// ════════════════════════════════════════════
-// WEATHER WIDGET
-// ════════════════════════════════════════════
-var hour = new Date().getHours();
-var weather;
-if (hour >= 6 && hour < 12) weather = { temp: '70°', icon: '🌅', desc: 'Coastal Morning' };
-else if (hour >= 12 && hour < 17) weather = { temp: '74°', icon: '☀️', desc: 'Sunny Afternoon' };
-else if (hour >= 17 && hour < 20) weather = { temp: '69°', icon: '🌇', desc: 'Golden Hour' };
-else weather = { temp: '64°', icon: '🌙', desc: 'Cool Evening' };
-
-var wbTemp = document.getElementById('wbTemp');
-var wbDesc = document.getElementById('wbDesc');
-var wbIcon = document.getElementById('weatherBadge').querySelector('.wb-icon');
-if (wbTemp) wbTemp.textContent = weather.temp;
-if (wbDesc) wbDesc.textContent = weather.desc;
-if (wbIcon) wbIcon.textContent = weather.icon;
-
-// ════════════════════════════════════════════
-// ANIMATED DATA BAR COUNTERS
-// ════════════════════════════════════════════
-function animateCount(el, end, prefix, suffix, duration) {
-  if (!el) return;
-  var start = 0;
-  var range = end - start;
-  var startTime = null;
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    var progress = Math.min((timestamp - startTime) / duration, 1);
-    var eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = prefix + Math.round(start + range * eased).toLocalring() + suffix;
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+// ── ANIMATED COUNTERS ──
+function animCount(el, end, pre, suf, dur) {
+  if(!el) return;
+  var s=0, st=null;
+  (function step(ts){
+    if(!st) st=ts;
+    var p=Math.min((ts-st)/dur,1), e=1-Math.pow(1-p,3);
+    el.textContent=pre+Math.round(s+(end-s)*e).toLocaleString()+suf;
+    if(p<1) requestAnimationFrame(step);
+  })(0);
+  requestAnimationFrame(function(ts){ st=ts; });
 }
+setTimeout(function(){
+  animCount(document.getElementById('dbDetached'),1089795,'$','',1400);
+  animCount(document.getElementById('dbCondo'),   660000, '$','',1200);
+  animCount(document.getElementById('dbBah'),     4404,   '$','',1000);
+},600);
 
-setTimeout(function() {
-  animateCount(document.getElementById('dbDetached'), 1089795, '$', '', 1400);
-  animateCount(document.getElementById('dbCondo'), 660000, '$', '', 1200);
-  animateCount(document.getElementById('dbBah'), 4404, '$', '', 1000);
-}, 600);
+// ── RANK SELECTOR ──
+var rkBtns = document.querySelectorAll('.rank-btn');
+rkBtns.forEach(function(btn){
+  btn.addEventListener('click', function(){
+    rkBtns.forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    document.querySelectorAll('.rank-panel').forEach(function(p){ p.style.display='none'; });
+    var t=document.getElementById('rank-'+this.getAttribute('data-rank'));
+    if(t) t.style.display='block';
+  });
+});
 
+// ── FAQ ACCORDIONS ──
+var faqs = document.querySelectorAll('.faq-item');
+faqs.forEach(function(item){
+  var q=item.querySelector('.faq-q'), a=item.querySelector('.faq-a');
+  if(q&&a) q.addEventListener('click', function(){
+    var open = a.style.display==='block';
+    faqs.forEach(function(fi){
+      var fa=fi.querySelector('.faq-a'); if(fa) fa.style.display='none';
+      fi.classList.remove('open');
+    });
+    if(!open){ a.style.display='block'; item.classList.add('open'); }
+  });
+});
 
-// ════ FUNDING FEE CALCULATOR ════
-var ffIsFirst = true;
-var ffIsExempt = false;
-
-var ffFirstEl = document.getElementById('ffFirst');
-var ffSubseqEl = document.getElementById('ffSubseq');
+// ── FUNDING FEE CALCULATOR ──
+var ffIsFirst=true, ffIsExempt=false;
+function ffCalc(){
+  var ffCalcBtnEl=document.getElementById('ffCalcBtn');
+  // triggered by button click below
+}
+var ffFirstEl   = document.getElementById('ffFirst');
+var ffSubseqEl  = document.getElementById('ffSubseq');
 var ffExemptYEl = document.getElementById('ffExemptY');
 var ffExemptNEl = document.getElementById('ffExemptN');
 var ffCalcBtnEl = document.getElementById('ffCalcBtn');
-
-if(ffFirstEl) ffFirstEl.addEventListener('click', function(){ ffIsFirst=true; ffUpdateResult(); });
-if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpdateResult(); });
-if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
-if(
-if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
-if(ffCalcBtnEl) if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
-  var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');
-  var fee = ffIsExempt ? 0 : ffIsFirst ? 0.0215 : 0.033;
+if(ffFirstEl)   ffFirstEl.addEventListener('click',   function(){ ffIsFirst=true;  });
+if(ffSubseqEl)  ffSubseqEl.addEventListener('click',  function(){ ffIsFirst=false; });
+if(ffExemptYEl) ffExemptYEl.addEventListener('click', function(){ ffIsExempt=true; });
+if(ffExemptNEl) ffExemptNEl.addEventListener('click', function(){ ffIsExempt=false;});
+if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
+  var price = parseFloat((document.getElementById('ffPrice')||{}).value || '700000');
+  var fee   = ffIsExempt ? 0 : ffIsFirst ? 0.0215 : 0.033;
   var feeAmt = price * fee;
-  var resultEl = document.getElementById('ffResult');
-  var noteEl = document.getElementById('ffNote');
-  if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'Can be rolled into your loan. Verify current rates at VA.gov.';
-  var resBox = document.getElementById('ffResultBox');
-  if(resBox) resBox.style.display='block';
+  var e;
+  if((e=document.getElementById('ffResult')))    e.textContent = '$'+Math.round(feeAmt).toLocaleString();
+  if((e=document.getElementById('ffNote')))      e.textContent = ffIsExempt
+    ? 'You are exempt from the VA funding fee. Verify exemption status at VA.gov before closing.'
+    : 'This amount can be rolled into your loan — no cash needed at closing. On a $'+price.toLocaleString()+' purchase, loan balance becomes approximately $'+Math.round(price+feeAmt).toLocaleString()+'. Verify current rates at VA.gov.';
+  if((e=document.getElementById('ffResultBox'))) e.style.display='block';
 });
+
 }); // end DOMContentLoaded
 </script>
 </body>
