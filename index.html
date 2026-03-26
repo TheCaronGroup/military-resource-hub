@@ -896,29 +896,7 @@ h2.sec-h.gold{color:var(--gold2);}
         </div>
       </div>
       <div>
-        <div class="vid-wrap" id="vidWrap">
-          <!-- VIDEO PLACEHOLDER — Replace VIDEO_ID_HERE with your YouTube video ID -->
-          <!-- Example: if your URL is youtube.com/watch?v=ABC123 then VIDEO_ID = ABC123 -->
-          <div id="vidThumb" style="cursor:pointer;" onclick="playVideo()">
-            <div class="vid-play" style="margin-bottom:14px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:5px;">A Message from Ryan</div>
-            <div style="font-size:13px;color:rgba(255,255,255,.38);max-width:280px;margin:0 auto 14px;">Former rescue swimmer. Top 3% San Diego Realtor. On a mission to help military families.</div>
-            <div style="padding:12px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(184,146,42,.2);border-radius:3px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;text-align:left;">
-              <strong style="color:var(--gold2);">&#128247; To activate your video:</strong><br>
-              1. Upload your video to YouTube<br>
-              2. Copy the video URL (e.g. youtube.com/watch?v=<strong style="color:var(--gold2);">XXXXXXX</strong>)<br>
-              3. Send Ryan that URL — we update this line in 5 minutes:<br>
-              <code style="color:var(--teal2);font-size:10px;background:rgba(255,255,255,.06);padding:3px 6px;border-radius:2px;display:inline-block;margin-top:4px;">var YOUTUBE_ID = 'km2XZrB_QAE';</code>
-            </div>
-          </div>
-          <div id="vidPlayer" style="display:none;">
-            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;">
-              <iframe id="ytIframe" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -950,16 +928,33 @@ h2.sec-h.gold{color:var(--gold2);}
   </div>
 </footer>
 
+
+<script>
+// Global functions - must be outside DOMContentLoaded for onclick to work
+function switchBase(btn, baseName) {
+  var panels = document.querySelectorAll('.base-panel');
+  for (var i = 0; i < panels.length; i++) { panels[i].style.display = 'none'; }
+  var target = document.getElementById('base-' + baseName);
+  if (target) { target.style.display = 'block'; }
+  var btns = document.querySelectorAll('[data-base]');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+}
+
+function goHome() { window.location.href = 'index.html'; }
+</script>
+
 <script>
 
 
-document.addEventListener('DOMContentLoaded', function() {
+function switchBase(btn, baseName) {
+  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
+  var target = document.getElementById('base-'+baseName);
+  if(target) target.style.display='block';
+  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+}
 
-// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════
 function switchTab(tabName) {
   // Hide all panels
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
@@ -975,6 +970,14 @@ function switchTab(tabName) {
   // Scroll to top
   window.scrollTo(0, 0);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+
+// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════
 
 // Tab button click handlers
 document.querySelectorAll('.tab-btn').forEach(function(btn) {
@@ -1005,13 +1008,6 @@ if (menuBtn) {
 // ════════════════════════════════════════════
 // BASE SUB-TABS (Where to Live)
 // ════════════════════════════════════════════
-function switchBase(btn, baseName) {
-  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
-  var target = document.getElementById('base-'+baseName);
-  if(target) target.style.display='block';
-  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
-}
 
 // ════════════════════════════════════════════
 // FAQ ACCORDIONS
@@ -1321,6 +1317,7 @@ var ffCalcBtnEl = document.getElementById('ffCalcBtn');
 if(ffFirstEl) ffFirstEl.addEventListener('click', function(){ ffIsFirst=true; ffUpdateResult(); });
 if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpdateResult(); });
 if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
+if(
 if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
 if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');

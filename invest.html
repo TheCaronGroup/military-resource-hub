@@ -723,6 +723,37 @@ body { padding-bottom: 60px; }
     </div>
   </div>
 </section>
+<section class="sec sec-fog">
+  <div class="wrap">
+    <span class="lbl">Advanced Strategy</span>
+    <div class="rule"></div>
+    <h2 class="sec-h" style="margin-bottom:8px;">The Multi-Unit VA Loan Strategy</h2>
+    <p class="sec-sub" style="margin-bottom:16px;">One of the most powerful — and least used — VA loan strategies available.</p>
+    <div style="background:var(--white);border:1.5px solid rgba(184,146,42,.35);border-radius:3px;padding:18px;">
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;">The VA loan can be used to purchase a <strong style="color:var(--navy);">duplex, triplex, or fourplex</strong> — as long as you live in one unit as your primary residence. You rent out the remaining units. In San Diego's rental market, a well-chosen multi-unit property can generate enough rental income to nearly cover your entire mortgage payment.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;">When you PCS, you convert your primary unit to a rental and the property becomes a cash-flowing investment. You exit San Diego owning a multi-unit income property — often with zero down payment. This is how military families build real long-term wealth through service.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+        <div style="background:var(--fog);border-radius:2px;padding:10px 12px;font-size:12px;">
+          <strong style="color:var(--navy);">What qualifies</strong><br>
+          <span style="color:var(--muted);">2–4 unit residential properties where you occupy one unit as primary residence</span>
+        </div>
+        <div style="background:var(--fog);border-radius:2px;padding:10px 12px;font-size:12px;">
+          <strong style="color:var(--navy);">Rental income credit</strong><br>
+          <span style="color:var(--muted);">Lenders may count projected rental income toward qualification — ask your VA lender specifically</span>
+        </div>
+        <div style="background:var(--fog);border-radius:2px;padding:10px 12px;font-size:12px;">
+          <strong style="color:var(--navy);">San Diego opportunity</strong><br>
+          <span style="color:var(--muted);">Duplexes and triplexes exist in many military-adjacent neighborhoods at realistic price points</span>
+        </div>
+        <div style="background:var(--fog);border-radius:2px;padding:10px 12px;font-size:12px;">
+          <strong style="color:var(--navy);">Talk to Ryan first</strong><br>
+          <span style="color:var(--muted);">Multi-unit VA purchases require specific lender and property qualification — get guidance before you shop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="sec sec-fog">
   <div class="wrap">
@@ -809,18 +840,31 @@ body { padding-bottom: 60px; }
   </div>
 </footer>
 
+
+<script>
+// Global functions - must be outside DOMContentLoaded for onclick to work
+function switchBase(btn, baseName) {
+  var panels = document.querySelectorAll('.base-panel');
+  for (var i = 0; i < panels.length; i++) { panels[i].style.display = 'none'; }
+  var target = document.getElementById('base-' + baseName);
+  if (target) { target.style.display = 'block'; }
+  var btns = document.querySelectorAll('[data-base]');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+}
+
+function goHome() { window.location.href = 'index.html'; }
+</script>
+
 <script>
 
 
-document.addEventListener('DOMContentLoaded', function() {
-
-// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════
-function goHome() {
-  switchTab('home');
+function switchBase(btn, baseName) {
+  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
+  var target = document.getElementById('base-'+baseName);
+  if(target) target.style.display='block';
+  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
 }
 
 function switchTab(tabName) {
@@ -880,14 +924,19 @@ function switchTab(tabName) {
   document.body.scrollTop = 0;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
 
-function switchBase(btn, baseName) {
-  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
-  var target = document.getElementById('base-'+baseName);
-  if(target) target.style.display='block';
-  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
+// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════
+function goHome() {
+  switchTab('home');
 }
+
+
+
 
 // ════════════════════════════════════════════
 // FAQ ACCORDIONS
@@ -1197,6 +1246,7 @@ var ffCalcBtnEl = document.getElementById('ffCalcBtn');
 if(ffFirstEl) ffFirstEl.addEventListener('click', function(){ ffIsFirst=true; ffUpdateResult(); });
 if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpdateResult(); });
 if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
+if(
 if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
 if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');

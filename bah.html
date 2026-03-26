@@ -709,7 +709,7 @@ body { padding-bottom: 60px; }
     <h2 class="sec-h lt" style="margin-bottom:10px;">Understand BAH. Know<br>What You Can <em style="font-family:'Cormorant Garamond',serif;">Actually</em> Afford.</h2>
 <p style="font-size:11px;color:var(--silver);margin:6px 0 0;"><span style="background:var(--fog);border:1px solid var(--border);border-radius:2px;padding:2px 8px;">&#128203; Last reviewed March 2026 &nbsp;&#xB7;&nbsp; Verify current figures at VA.gov and DefenseTravel.mil</span></p>
     <p class="sec-sub lt">BAH is powerful &#8212; but it is not a complete budget. This guide helps you understand BAH, plan your full housing cost, and make a smart affordability decision for San Diego.</p>
-    <div class="verified"><span class="verified-dot"></span>BAH rates updated annually by DoD &nbsp;&#xB7;&nbsp; Verify current rates at <a href="https://www.defensetravel.dod.mil/site/bahCalc.cfm" target="_blank" style="color:var(--teal2);">DefenseTravel.mil &#8594;</a></div>
+    <div class="verified"><span class="verified-dot"></span>BAH rates updated annually by DoD &nbsp;&#xB7;&nbsp; Verify current rates at <a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/" target="_blank" style="color:var(--teal2);">DefenseTravel.mil &#8594;</a></div>
   </div>
 </section>
 
@@ -750,7 +750,7 @@ body { padding-bottom: 60px; }
   <div class="wrap">
     <span class="lbl">Section 2 — 2026 San Diego BAH Rates</span>
     <h2 class="sec-h" style="margin-bottom:10px;">2026 San Diego BAH by Rank</h2>
-    <p class="sec-sub">Published 2026 BAH rates for San Diego. Rates shown are for primary ZIP codes associated with San Diego installations. Always verify at <a href="https://www.defensetravel.dod.mil/site/bahCalc.cfm" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a>.</p>
+    <p class="sec-sub">Published 2026 BAH rates for San Diego. Rates shown are for primary ZIP codes associated with San Diego installations. Always verify at <a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a>.</p>
     <div class="bah-tbl" style="margin-bottom:20px;">
       <div class="bah-head" style="grid-template-columns:1fr 1fr 1fr;"><span>Pay Grade</span><span>With Dependents</span><span>Without Dependents</span></div>
       <div class="bah-row" style="grid-template-columns:1fr 1fr 1fr;"><span class="bah-rank">E-4</span><span style="color:var(--charcoal);">$2,988</span><span style="color:var(--muted);">$2,181</span></div>
@@ -866,7 +866,7 @@ body { padding-bottom: 60px; }
 <div style="background:rgba(14,110,140,.06);border:1px solid rgba(14,110,140,.2);border-radius:3px;padding:18px;margin-bottom:20px;">
   <div style="font-weight:700;font-size:14px;color:var(--teal2);margin-bottom:8px;">&#127758; Currently Stationed Overseas? BAH vs OHA</div>
   <p style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:8px;">If you are currently receiving OHA (Overseas Housing Allowance) and planning to PCS to San Diego, your future BAH will be different — and may be significantly higher or lower depending on where you are stationed now.</p>
-  <p style="font-size:13px;color:var(--muted);line-height:1.65;">Do not plan your San Diego housing budget around your current OHA amount. Calculate your <strong>San Diego BAH</strong> specifically at <a href="https://www.defensetravel.dod.mil/site/bahCalc.cfm" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a> before making any housing decisions.</p>
+  <p style="font-size:13px;color:var(--muted);line-height:1.65;">Do not plan your San Diego housing budget around your current OHA amount. Calculate your <strong>San Diego BAH</strong> specifically at <a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a> before making any housing decisions.</p>
 </div>
 
 <section class="sec sec-white">
@@ -903,7 +903,7 @@ body { padding-bottom: 60px; }
 <div style="background:rgba(14,110,140,.06);border:1px solid rgba(14,110,140,.2);border-radius:3px;padding:18px;margin-bottom:20px;">
   <div style="font-weight:700;font-size:14px;color:var(--teal2);margin-bottom:8px;">&#127758; Currently Stationed Overseas? BAH vs OHA</div>
   <p style="font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:8px;">If you are currently receiving OHA (Overseas Housing Allowance) and planning to PCS to San Diego, your future BAH will be different — and may be significantly higher or lower depending on where you are stationed now.</p>
-  <p style="font-size:13px;color:var(--muted);line-height:1.65;">Do not plan your San Diego housing budget around your current OHA amount. Calculate your <strong>San Diego BAH</strong> specifically at <a href="https://www.defensetravel.dod.mil/site/bahCalc.cfm" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a> before making any housing decisions.</p>
+  <p style="font-size:13px;color:var(--muted);line-height:1.65;">Do not plan your San Diego housing budget around your current OHA amount. Calculate your <strong>San Diego BAH</strong> specifically at <a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/" target="_blank" style="color:var(--teal);">DefenseTravel.mil</a> before making any housing decisions.</p>
 </div>
 
 <section class="sec sec-fog">
@@ -959,18 +959,31 @@ body { padding-bottom: 60px; }
   </div>
 </footer>
 
+
+<script>
+// Global functions - must be outside DOMContentLoaded for onclick to work
+function switchBase(btn, baseName) {
+  var panels = document.querySelectorAll('.base-panel');
+  for (var i = 0; i < panels.length; i++) { panels[i].style.display = 'none'; }
+  var target = document.getElementById('base-' + baseName);
+  if (target) { target.style.display = 'block'; }
+  var btns = document.querySelectorAll('[data-base]');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+  if (btn) { btn.classList.add('active'); }
+}
+
+function goHome() { window.location.href = 'index.html'; }
+</script>
+
 <script>
 
 
-document.addEventListener('DOMContentLoaded', function() {
-
-// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════// ════════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════════
-function goHome() {
-  switchTab('home');
+function switchBase(btn, baseName) {
+  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
+  var target = document.getElementById('base-'+baseName);
+  if(target) target.style.display='block';
+  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
 }
 
 function switchTab(tabName) {
@@ -1030,14 +1043,19 @@ function switchTab(tabName) {
   document.body.scrollTop = 0;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
 
-function switchBase(btn, baseName) {
-  document.querySelectorAll('.base-panel').forEach(function(p){p.style.display='none';});
-  var target = document.getElementById('base-'+baseName);
-  if(target) target.style.display='block';
-  document.querySelectorAll('[data-base]').forEach(function(b){b.classList.remove('active');});
-  if(btn) btn.classList.add('active');
+// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════// ════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════
+function goHome() {
+  switchTab('home');
 }
+
+
+
 
 // ════════════════════════════════════════════
 // FAQ ACCORDIONS
@@ -1347,6 +1365,7 @@ var ffCalcBtnEl = document.getElementById('ffCalcBtn');
 if(ffFirstEl) ffFirstEl.addEventListener('click', function(){ ffIsFirst=true; ffUpdateResult(); });
 if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpdateResult(); });
 if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
+if(
 if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
 if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');
