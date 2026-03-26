@@ -473,7 +473,7 @@ h2.sec-h.gold{color:var(--gold2);}
 .cc-val{font-size:18px;font-weight:700;color:var(--white);line-height:1.2;}
 .cc-sub{font-size:11px;color:rgba(255,255,255,.45);}
 
-/* Video placeholder */
+/* Video section */
 .vid-wrap{background:var(--navy);border:1px solid rgba(184,146,42,.14);border-radius:4px;padding:28px 18px;text-align:center;position:relative;overflow:hidden;}
 .vid-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(14,110,140,.08) 0%,transparent 65%);pointer-events:none;}
 .vid-play{width:60px;height:60px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;z-index:1;box-shadow:0 4px 18px rgba(200,16,46,.38);}
@@ -910,7 +910,7 @@ h2.sec-h.gold{color:var(--gold2);}
               1. Upload your video to YouTube<br>
               2. Copy the video URL (e.g. youtube.com/watch?v=<strong style="color:var(--gold2);">XXXXXXX</strong>)<br>
               3. Send Ryan that URL — we update this line in 5 minutes:<br>
-              <code style="color:var(--teal2);font-size:10px;background:rgba(255,255,255,.06);padding:3px 6px;border-radius:2px;display:inline-block;margin-top:4px;">var YOUTUBE_ID = 'YOUR_ID_HERE';</code>
+              <code style="color:var(--teal2);font-size:10px;background:rgba(255,255,255,.06);padding:3px 6px;border-radius:2px;display:inline-block;margin-top:4px;">var YOUTUBE_ID = 'km2XZrB_QAE';</code>
             </div>
           </div>
           <div id="vidPlayer" style="display:none;">
@@ -940,10 +940,10 @@ h2.sec-h.gold{color:var(--gold2);}
       Ryan &amp; Danielle Caron &nbsp;&#xB7;&nbsp; DRE 02161807<br>
       <strong style="color:rgba(255,255,255,.45);">Ryan:</strong>
       <a href="tel:7818662889">781.866.2889</a> &nbsp;&#xB7;&nbsp;
-      <span style="color:rgba(255,255,255,.4);">ryan@thecarongroup.com</span><br>
+      <a href="mailto:ryan@thecarongroup.com" style="color:rgba(255,255,255,.4);">ryan@thecarongroup.com</a><br>
       <strong style="color:rgba(255,255,255,.45);">Danielle:</strong>
       <a href="tel:6198894919">619.889.4919</a> &nbsp;&#xB7;&nbsp;
-      <span style="color:rgba(255,255,255,.4);">danielle@thecarongroup.com</span><br>
+      <a href="mailto:danielle@thecarongroup.com" style="color:rgba(255,255,255,.4);">danielle@thecarongroup.com</a><br>
       <a href="https://TheCaronGroup.com" target="_blank">TheCaronGroup.com</a>
     </div>
     <div class="footer-disc">Educational purposes only. Not financial, legal, or investment advice. Verify all figures with your lender and at VA.gov.</div>
@@ -1237,12 +1237,10 @@ for (var i = 1; i <= total; i++) {
 
 
 // ════ VIDEO PLAYER ════
-// INSTRUCTIONS: Replace 'YOUR_ID_HERE' with your YouTube video ID
-// Example: if URL is youtube.com/watch?v=dQw4w9WgXcQ then ID is dQw4w9WgXcQ
-var YOUTUBE_ID = 'YOUR_ID_HERE'; // ← REPLACE THIS WITH YOUR VIDEO ID
+var YOUTUBE_ID = 'km2XZrB_QAE';
 
 function playVideo() {
-  if (YOUTUBE_ID === 'YOUR_ID_HERE') {
+  if (YOUTUBE_ID === 'NOTUSED') {
     // No video yet - shake the instruction box
     var thumb = document.getElementById('vidThumb');
     if (thumb) {
@@ -1331,7 +1329,7 @@ if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var resultEl = document.getElementById('ffResult');
   var noteEl = document.getElementById('ffNote');
   if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'This can be rolled into your loan. Verify at VA.gov.';
+  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'This can be rolled into your loan. Verify current rates at VA.gov.';
   var resBox = document.getElementById('ffResultBox');
   if(resBox) resBox.style.display='block';
 });
