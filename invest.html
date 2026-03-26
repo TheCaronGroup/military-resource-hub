@@ -1160,30 +1160,6 @@ for (var i = 1; i <= total; i++) {
   })(i);
 }
 
-
-// ════ VIDEO PLAYER ════
-var YOUTUBE_ID = 'km2XZrB_QAE';
-
-function playVideo() {
-  if (YOUTUBE_ID === 'NOTUSED') {
-    // No video yet - shake the instruction box
-    var thumb = document.getElementById('vidThumb');
-    if (thumb) {
-      thumb.style.transform = 'scale(1.02)';
-      setTimeout(function(){ thumb.style.transform = ''; }, 200);
-    }
-    return;
-  }
-  var thumb = document.getElementById('vidThumb');
-  var player = document.getElementById('vidPlayer');
-  var iframe = document.getElementById('ytIframe');
-  if (thumb && player && iframe) {
-    iframe.src = 'https://www.youtube.com/embed/' + YOUTUBE_ID + '?autoplay=1&rel=0';
-    thumb.style.display = 'none';
-    player.style.display = 'block';
-  }
-}
-
 // Also wire the play button
 var vidPlayBtn = document.querySelector('#vidThumb .vid-play');
 if (vidPlayBtn) {
@@ -1255,7 +1231,7 @@ if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var resultEl = document.getElementById('ffResult');
   var noteEl = document.getElementById('ffNote');
   if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'This can be rolled into your loan. Verify current rates at VA.gov.';
+  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt. Verify at VA.gov.' : 'Can be rolled into loan. Verify at VA.gov.';
   var resBox = document.getElementById('ffResultBox');
   if(resBox) resBox.style.display='block';
 });

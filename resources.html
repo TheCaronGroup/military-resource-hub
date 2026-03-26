@@ -737,7 +737,7 @@ body { padding-bottom: 60px; }
           <div>
             <div style="font-size:13px;font-weight:700;color:var(--navy);">SAY San Diego — Military Family Resource Center</div>
             <div style="font-size:12px;color:var(--muted);margin-top:4px;">Provides direct support services to active duty, transitioning veterans, and military families including financial counseling, case management, and emergency resources.</div>
-            <div style="font-size:11px;color:var(--silver);margin-top:4px;">Contact: <a href="mailto:mfrc@saysandiego.org" style="color:var(--teal);">mfrc@saysandiego.org</a></div>
+            <div style="font-size:11px;color:var(--silver);margin-top:4px;">Contact: </div>
           </div>
           <a href="https://www.saysandiego.org/who-we-serve/military-families/" target="_blank" style="background:var(--navy);color:white;font-size:11px;font-weight:700;padding:6px 12px;border-radius:2px;text-decoration:none;white-space:nowrap;">SAY San Diego &#8599;</a>
         </div>
@@ -1279,109 +1279,6 @@ for (var i = 1; i <= total; i++) {
         this.textContent = this.classList.contains('done') ? '✓' : '';
         updateProgress();
       });
-    }
-  })(i);
-}
-
-
-// ════ VIDEO PLAYER ════
-var YOUTUBE_ID = 'km2XZrB_QAE';
-
-function playVideo() {
-  if (YOUTUBE_ID === 'NOTUSED') {
-    // No video yet - shake the instruction box
-    var thumb = document.getElementById('vidThumb');
-    if (thumb) {
-      thumb.style.transform = 'scale(1.02)';
-      setTimeout(function(){ thumb.style.transform = ''; }, 200);
-    }
-    return;
-  }
-  var thumb = document.getElementById('vidThumb');
-  var player = document.getElementById('vidPlayer');
-  var iframe = document.getElementById('ytIframe');
-  if (thumb && player && iframe) {
-    iframe.src = 'https://www.youtube.com/embed/' + YOUTUBE_ID + '?autoplay=1&rel=0';
-    thumb.style.display = 'none';
-    player.style.display = 'block';
-  }
-}
-
-// Also wire the play button
-var vidPlayBtn = document.querySelector('#vidThumb .vid-play');
-if (vidPlayBtn) {
-  vidPlayBtn.style.cursor = 'pointer';
-}
-
-
-// ════════════════════════════════════════════
-// WEATHER WIDGET
-// ════════════════════════════════════════════
-var hour = new Date().getHours();
-var weather;
-if (hour >= 6 && hour < 12) weather = { temp: '70°', icon: '🌅', desc: 'Coastal Morning' };
-else if (hour >= 12 && hour < 17) weather = { temp: '74°', icon: '☀️', desc: 'Sunny Afternoon' };
-else if (hour >= 17 && hour < 20) weather = { temp: '69°', icon: '🌇', desc: 'Golden Hour' };
-else weather = { temp: '64°', icon: '🌙', desc: 'Cool Evening' };
-
-var wbTemp = document.getElementById('wbTemp');
-var wbDesc = document.getElementById('wbDesc');
-var wbIcon = document.getElementById('weatherBadge').querySelector('.wb-icon');
-if (wbTemp) wbTemp.textContent = weather.temp;
-if (wbDesc) wbDesc.textContent = weather.desc;
-if (wbIcon) wbIcon.textContent = weather.icon;
-
-// ════════════════════════════════════════════
-// ANIMATED DATA BAR COUNTERS
-// ════════════════════════════════════════════
-function animateCount(el, end, prefix, suffix, duration) {
-  if (!el) return;
-  var start = 0;
-  var range = end - start;
-  var startTime = null;
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    var progress = Math.min((timestamp - startTime) / duration, 1);
-    var eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = prefix + Math.round(start + range * eased).toLocalring() + suffix;
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-setTimeout(function() {
-  animateCount(document.getElementById('dbDetached'), 1089795, '$', '', 1400);
-  animateCount(document.getElementById('dbCondo'), 660000, '$', '', 1200);
-  animateCount(document.getElementById('dbBah'), 4404, '$', '', 1000);
-}, 600);
-
-
-// ════ FUNDING FEE CALCULATOR ════
-var ffIsFirst = true;
-var ffIsExempt = false;
-
-var ffFirstEl = document.getElementById('ffFirst');
-var ffSubseqEl = document.getElementById('ffSubseq');
-var ffExemptYEl = document.getElementById('ffExemptY');
-var ffExemptNEl = document.getElementById('ffExemptN');
-var ffCalcBtnEl = document.getElementById('ffCalcBtn');
-
-if(ffFirstEl) ffFirstEl.addEventListener('click', function(){ ffIsFirst=true; ffUpdateResult(); });
-if(ffSubEl) ffSubEl.addEventListener('click', function(){ ffIsFirst=false; ffUpdateResult(); });
-if(ffYesEl) ffYesEl.addEventListener('click', function(){ ffIsExempt=true; ffUpdateResult(); });
-if(
-if(ffNoEl) ffNoEl.addEventListener('click', function(){ ffIsExempt=false; ffUpdateResult(); });
-if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
-  var price = parseFloat((document.getElementById('ffPrice')||{}).value||'700000');
-  var fee = ffIsExempt ? 0 : ffIsFirst ? 0.0215 : 0.033;
-  var feeAmt = price * fee;
-  var resultEl = document.getElementById('ffResult');
-  var noteEl = document.getElementById('ffNote');
-  if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'This can be rolled into your loan. Verify current rates at VA.gov.';
-  var resBox = document.getElementById('ffResultBox');
-  if(resBox) resBox.style.display='block';
-});
 }); // end DOMContentLoaded
 </script>
 </body>

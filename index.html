@@ -821,6 +821,39 @@ h2.sec-h.gold{color:var(--gold2);}
         <div class="info-card-body">Our story. Why we built this. What we believe. How we help. And how to reach us directly.</div>
         <div style="margin-top:8px;font-size:11px;font-weight:700;color:var(--teal2);">Meet the Team &rarr;</div>
       </button>
+      
+      <!-- SEARCH HOMES - Premium card -->
+      <a href="https://www.ryancaronrealtor.net/listing" target="_blank" style="
+        display:block;
+        text-decoration:none;
+        margin-top:8px;
+        background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+        border:2px solid var(--gold);
+        border-radius:4px;
+        padding:20px 20px;
+        position:relative;
+        overflow:hidden;
+        transition:transform .15s ease, box-shadow .15s ease;
+      " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'" 
+         onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;background:var(--gold);color:var(--navy);font-size:10px;font-weight:800;padding:4px 12px;letter-spacing:.08em;text-transform:uppercase;">Live MLS</div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:48px;height:48px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#128269;</div>
+          <div style="flex:1;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:white;margin-bottom:3px;">Search San Diego Homes</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;">Browse live listings near every base — filter by price, neighborhood &amp; property type. Updated daily from MLS.</div>
+          </div>
+          <div style="font-size:28px;color:var(--gold);flex-shrink:0;">&#8250;</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">Coronado</span>
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">Chula Vista</span>
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">Mira Mesa</span>
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">Oceanside</span>
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">Point Loma</span>
+          <span style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;">+ More &#8599;</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -884,7 +917,7 @@ h2.sec-h.gold{color:var(--gold2);}
             <span class="cc-icon">&#128222;</span>
             <div><div class="cc-lbl">Call or Text Danielle</div><div class="cc-val">619.889.4919</div><div class="cc-sub">Answers personally</div></div>
           </a>
-          <a href="https://www.ryancaronrealtor.net/" target="_blank" class="contact-card dark">
+          <a href="https://www.ryancaronrealtor.net/listing" target="_blank" class="contact-card dark">
             <span class="cc-icon">&#127968;</span>
             <div><div class="cc-lbl">Search Listings</div><div class="cc-val">RyanCaronRealtor.net</div><div class="cc-sub">Live MLS updated daily</div></div>
           </a>
@@ -1231,30 +1264,6 @@ for (var i = 1; i <= total; i++) {
   })(i);
 }
 
-
-// ════ VIDEO PLAYER ════
-var YOUTUBE_ID = 'km2XZrB_QAE';
-
-function playVideo() {
-  if (YOUTUBE_ID === 'NOTUSED') {
-    // No video yet - shake the instruction box
-    var thumb = document.getElementById('vidThumb');
-    if (thumb) {
-      thumb.style.transform = 'scale(1.02)';
-      setTimeout(function(){ thumb.style.transform = ''; }, 200);
-    }
-    return;
-  }
-  var thumb = document.getElementById('vidThumb');
-  var player = document.getElementById('vidPlayer');
-  var iframe = document.getElementById('ytIframe');
-  if (thumb && player && iframe) {
-    iframe.src = 'https://www.youtube.com/embed/' + YOUTUBE_ID + '?autoplay=1&rel=0';
-    thumb.style.display = 'none';
-    player.style.display = 'block';
-  }
-}
-
 // Also wire the play button
 var vidPlayBtn = document.querySelector('#vidThumb .vid-play');
 if (vidPlayBtn) {
@@ -1326,7 +1335,7 @@ if(ffCalcBtnEl) ffCalcBtnEl.addEventListener('click', function(){
   var resultEl = document.getElementById('ffResult');
   var noteEl = document.getElementById('ffNote');
   if(resultEl) resultEl.textContent = '$' + Math.round(feeAmt).toLocaleString();
-  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt from the funding fee. Verify at VA.gov.' : 'This can be rolled into your loan. Verify current rates at VA.gov.';
+  if(noteEl) noteEl.textContent = ffIsExempt ? 'You are exempt. Verify at VA.gov.' : 'Can be rolled into loan. Verify at VA.gov.';
   var resBox = document.getElementById('ffResultBox');
   if(resBox) resBox.style.display='block';
 });
